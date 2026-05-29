@@ -12,9 +12,10 @@ export const size = {
 export const contentType = 'image/png'
 
 export default async function Image({ params }: { params: { username: string } }) {
-  // Edge runtime에서 로컬 폰트 파일을 읽기 (앞서 다운로드 받은 NotoSansKR-Bold.otf)
+  // Vercel Edge Runtime 번들 용량 제한(1MB) 우회:
+  // 로컬 폰트(4.7MB)를 번들링하지 않고 외부 CDN에서 런타임에 동적으로 가져옵니다.
   const fontData = await fetch(
-    new URL('../../public/fonts/NotoSansKR-Bold.otf', import.meta.url)
+    'https://cdn.jsdelivr.net/gh/googlefonts/noto-cjk@main/Sans/SubsetOTF/KR/NotoSansKR-Bold.otf'
   ).then((res) => res.arrayBuffer())
 
   // URL에서 인코딩된 username을 안전하게 디코딩
